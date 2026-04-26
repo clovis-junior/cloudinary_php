@@ -424,7 +424,12 @@ class ApiClient extends BaseApiClient
             ];
         }
 
-        return array_merge_recursive($clientConfig, $authConfig);
+        if (isset($authConfig['headers'])) {
+            $clientConfig['headers'] = array_merge($clientConfig['headers'], $authConfig['headers']);
+            unset($authConfig['headers']);
+        }
+
+        return array_merge($clientConfig, $authConfig);
     }
 
     /**

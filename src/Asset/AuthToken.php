@@ -85,7 +85,13 @@ class AuthToken
      */
     public function configuration(mixed $configuration): static
     {
-        $tempConfiguration = new Configuration($configuration, false); // TODO: improve performance here
+        if ($configuration instanceof Configuration) {
+            $this->config = clone $configuration->authToken;
+
+            return $this;
+        }
+
+        $tempConfiguration = new Configuration($configuration, false);
 
         $this->config = $tempConfiguration->authToken;
 

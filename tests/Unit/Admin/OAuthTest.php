@@ -43,6 +43,12 @@ final class OAuthTest extends UnitTestCase
                 'Authorization' => ['Bearer ' . self::FAKE_OAUTH_TOKEN]
             ]
         );
+
+        self::assertArrayHasKey(
+            'User-Agent',
+            $lastRequest->getHeaders(),
+            'User-Agent header must be present alongside Authorization when using OAuth token'
+        );
     }
 
     /**

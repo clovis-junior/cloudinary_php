@@ -162,7 +162,7 @@ class AssetDescriptor implements AssetInterface
             return $this;
         }
 
-        if (preg_match('/[.\/]/', $suffix)) {
+        if (str_contains($suffix, '.') || str_contains($suffix, '/')) {
             throw new \UnexpectedValueException(static::class . '::$suffix must not include . or /');
         }
 

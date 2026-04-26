@@ -10,6 +10,7 @@
 
 namespace Cloudinary\Test\Unit\Configuration;
 
+use Cloudinary\Asset\Image;
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Test\Unit\UnitTestCase;
 use Cloudinary\Utils;
@@ -150,6 +151,30 @@ class ConfigurationTest extends UnitTestCase
         self::assertEquals(
             $expectedJsonConfig,
             json_encode(Configuration::fromJson($expectedJsonConfig))
+        );
+    }
+
+    public function testAssetConfigurationIsIndependentFromGlobalConfig()
+    {
+        $globalConfig = Configuration::instance();
+        $originalCloudName = $globalConfig->cloud->cloudName;
+        $originalSecure    = $globalConfig->url->secure;
+
+        $image = new Image('sample.png');
+
+        // Mutating the asset's config sections must not affect the global configuration
+        $image->cloud->cloudName = 'mutated_cloud';
+        $image->urlConfig->secure = ! $originalSecure;
+
+        self::assertEquals(
+            $originalCloudName,
+            $globalConfig->cloud->cloudName,
+            'Mutating asset cloud config must not affect the global Configuration'
+        );
+        self::assertEquals(
+            $originalSecure,
+            $globalConfig->url->secure,
+            'Mutating asset url config must not affect the global Configuration'
         );
     }
 }

@@ -331,7 +331,7 @@ class Configuration implements ConfigurableInterface
             if (! $includeEmptySections && empty(array_values($section)[0])) {
                 continue;
             }
-            $json = array_merge($json, $section);
+            $json += $section;
         }
 
         return $json;

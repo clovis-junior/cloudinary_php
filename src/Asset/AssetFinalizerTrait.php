@@ -186,7 +186,7 @@ trait AssetFinalizerTrait
     {
         $source = $this->asset->publicId(true);
 
-        if (! preg_match('/^https?:\//i', $source)) {
+        if (stripos($source, 'http:/') !== 0 && stripos($source, 'https:/') !== 0) {
             $source = rawurldecode($source);
         }
 
@@ -212,10 +212,14 @@ trait AssetFinalizerTrait
 
         if (empty($version) && $this->urlConfig->forceVersion
             && ! empty($this->asset->location)
-            && ! preg_match('/^https?:\//', $this->asset->publicId())
-            && ! preg_match('/^v\d+/', $this->asset->publicId())
         ) {
-            $version = '1';
+            $publicId = $this->asset->publicId();
+            if (strncmp($publicId, 'http:/', 6) !== 0
+                && strncmp($publicId, 'https:/', 7) !== 0
+                && ! preg_match('/^v\d+/', $publicId)
+            ) {
+                $version = '1';
+            }
         }
 
         return $version ? 'v' . $version : null;
