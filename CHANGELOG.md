@@ -1,3 +1,9 @@
+3.1.3 / 2026-04-26
+==================
+
+  * Performance improvements
+  * Speed up URL/tag generation via `Configuration` clone fast-path
+
 3.1.2 / 2025-09-21
 ==================
 
